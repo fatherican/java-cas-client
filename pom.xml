@@ -17,42 +17,8 @@
     </description>
     <url>http://www.jasig.org/cas</url>
 
-    <issueManagement>
-        <system>JIRA</system>
-        <url>https://issues.jasig.org/browse/CASC</url>
-    </issueManagement>
-
-    <scm>
-        <connection>scm:git:git@github.com:Jasig/java-cas-client.git</connection>
-        <developerConnection>scm:git:git@github.com:Jasig/java-cas-client.git</developerConnection>
-        <url>https://github.com/Jasig/java-cas-client</url>
-      <tag>HEAD</tag>
-  </scm>
-
     <inceptionYear>2006</inceptionYear>
 
-    <developers>
-        <developer>
-            <id>battags</id>
-            <name>Scott Battaglia</name>
-            <email>scott.battaglia@gmail.com</email>
-            <url>http://www.scottbattaglia.com</url>
-            <roles>
-                <role>Project Admin</role>
-                <role>Developer</role>
-            </roles>
-            <timezone>-5</timezone>
-        </developer>
-        <developer>
-            <id>serac</id>
-            <name>Marvin S. Addison</name>
-            <email>marvin.addison@gmail.com</email>
-            <roles>
-                <role>Developer</role>
-            </roles>
-            <timezone>-5</timezone>
-        </developer>
-    </developers>
 
     <organization>
         <name>Jasig</name>
@@ -252,6 +218,7 @@
         <module>cas-client-integration-tomcat-common</module>
         <module>cas-client-integration-tomcat-v6</module>
         <module>cas-client-integration-tomcat-v7</module>
+        <module>cas-client-webapp</module>
     </modules>
 
     <properties>
