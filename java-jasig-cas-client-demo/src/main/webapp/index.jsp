@@ -8,8 +8,43 @@
 	<title>java-jasig-cas-client-demo</title>
 	<meta charset="UTF-8" />
 	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" />
+	<script type="text/javascript" src="http://libs.baidu.com/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript">
+		function ajaxServer() {
+			$.ajax({
+				type: "get",
+				crossDomain:true,
+				dataType: 'JSONP',
+				url: "protected/index.jsp",
+				success: function (xhr) {
+					console.log("success ");
+					console.log("success "+xhr.status);
+				},
+				error: function (xhr) {
+					console.log("error ");
+					console.log("error "+xhr.status);
+				},
+				complete:function onRequestCompleted(xhr,textStatus) {
+					console.log("complete "+xhr.status);
+					if (xhr.status == 302) {
+						location.href = xhr.getResponseHeader("Location");
+					}
+				}
+			});
+
+		}
+
+
+	</script>
+
 </head>
 <body>
+
+<input type="button" value="ajaxServer" onclick="ajaxServer()"/>
+	   <div id="serverContent">
+
+
+	   </div>
 <span>========aaaaa=========<%=request.getContextPath()%>=========aaaaaa======</span>
 	<div class="container">
 		<ul class="nav nav-tabs">
