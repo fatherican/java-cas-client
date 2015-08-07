@@ -4,7 +4,7 @@
 <html>
 <head>
 	<script type="text/javascript">
-		parent.${callback}('${state}','${message}','${serviceTicket}');
+		parent.window.${callback}('${state}','${message}','${serviceTicket}');
 	</script>
 </head>
 <body>

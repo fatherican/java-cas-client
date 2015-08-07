@@ -12,6 +12,25 @@
 	<!--</context-param>-->
 
 
+	<!--cas server服务器项目地址-->
+	<context-param>
+		<param-name>casServerUrl</param-name>
+		<param-value>https://cas.com:8443/cas</param-value>
+	</context-param>
+	<!--业务系统服务器项目地址-->
+	<context-param>
+		<param-name>bussinessServerUrl</param-name>
+		<param-value>http://client1.com:8081/client</param-value>
+	</context-param>
+	<!--从casServer获取验证码URL-->
+	<context-param>
+		<param-name>casServerCaptchaUrl</param-name>
+		<param-value>https://cas.com:8443/cas/login/getCaptcha</param-value>
+	</context-param>
+
+
+
+
 	<!-- Filter to handle logout requests sent directly by the CAS server -->
 	<filter>
 		<filter-name>CAS Single Sign Out Filter</filter-name>
@@ -54,6 +73,9 @@
 
 	<!-- Define the urls on which you can validate a service ticket -->
 	<!-- #### change with your own CAS server and your host name #### -->
+	<!--为了能让web 的原生Filter类注入Spring 对象，此处使用代理的方式来处理，filer的初始化依然依托于WEB容器而不依赖于-->
+	<!--spring容器，这样就可以达到init 和 destory 依然由 web容器管理-->
+
 	<filter>
 		<filter-name>CAS Validation Filter</filter-name>
 		<filter-class>org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter</filter-class>
@@ -65,11 +87,45 @@
 			<param-name>serverName</param-name>
 			<param-value>http://client1.com:8081</param-value>
 		</init-param>
+		<init-param>
+			<param-name>redirectAfterValidation</param-name>
+			<param-value>false</param-value>
+		</init-param>
 	</filter>
 	<filter-mapping>
 		<filter-name>CAS Validation Filter</filter-name>
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
+
+
+
+
+
+	<!--<filter>-->
+		<!--<filter-name>CAS Validation Filter</filter-name>-->
+		<!--<filter-class>org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter</filter-class>-->
+		<!--<init-param>-->
+			<!--<param-name>casServerUrlPrefix</param-name>-->
+			<!--<param-value>https://cas.com:8443/cas</param-value>-->
+		<!--</init-param>-->
+		<!--<init-param>-->
+			<!--<param-name>serverName</param-name>-->
+			<!--<param-value>http://client1.com:8081</param-value>-->
+		<!--</init-param>-->
+		<!--<init-param>-->
+			<!--<param-name>redirectAfterValidation</param-name>-->
+			<!--<param-value>false</param-value>-->
+		<!--</init-param>-->
+	<!--</filter>-->
+	<!--<filter-mapping>-->
+		<!--<filter-name>CAS Validation Filter</filter-name>-->
+		<!--<url-pattern>*</url-pattern>-->
+	<!--</filter-mapping>-->
+
+
+
+
+
 
 	<!-- Put the CAS principal in the HTTP request -->
 	<filter>
@@ -89,6 +145,31 @@
 		<servlet-name>validateLogin</servlet-name>
 		<url-pattern>/validateLogin</url-pattern>
 	</servlet-mapping>
+
+
+	<servlet>
+		<servlet-name>spring-mvc</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>spring-mvc</servlet-name>
+		<url-pattern>*.sso</url-pattern>
+	</servlet-mapping>
+	
+	
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>/WEB-INF/applicationContext.xml</param-value>
+	</context-param>
+	
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+
+
 
 
 	<session-config>

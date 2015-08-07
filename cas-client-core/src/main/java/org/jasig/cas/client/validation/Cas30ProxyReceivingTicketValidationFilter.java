@@ -20,6 +20,11 @@ package org.jasig.cas.client.validation;
 
 import org.jasig.cas.client.Protocol;
 
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * Creates either a Cas30ProxyTicketValidator or a Cas30ServiceTicketValidator depending on whether any of the
  * proxy parameters are set.
@@ -32,9 +37,41 @@ import org.jasig.cas.client.Protocol;
  */
 public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivingTicketValidationFilter {
 
+//    private C
+
     public Cas30ProxyReceivingTicketValidationFilter() {
         super(Protocol.CAS3);
         this.defaultServiceTicketValidatorClass = Cas30ServiceTicketValidator.class;
         this.defaultProxyTicketValidatorClass = Cas30ProxyTicketValidator.class;
+    }
+
+    @Override
+    public void init() {
+        super.init();
+
+    }
+
+    /**
+     * 初始化cookieGenerator和Json WEB TOKEN相关信息.
+     * @param filterConfig
+     * @throws ServletException
+     */
+    @Override
+    protected void initInternal(FilterConfig filterConfig) throws ServletException {
+        super.initInternal(filterConfig);
+
+    }
+
+
+    /**
+     * 当验证成功后，将用户信息转成JSON然后加密传递给前台.
+     * @param request the HttpServletRequest.
+     * @param response the HttpServletResponse.
+     * @param assertion the successful Assertion from the server.
+     */
+    @Override
+    protected void onSuccessfulValidation(HttpServletRequest request, HttpServletResponse response, Assertion assertion) {
+        super.onSuccessfulValidation(request, response, assertion);
+
     }
 }
