@@ -118,7 +118,7 @@ password:<input id="password" type="text"/>
 <span>========aaaaa=========<%=request.getContextPath()%>=========aaaaaa======</span>
 	<div class="container">
 		<ul class="nav nav-tabs">
-			<li class="active"><a href="/index.jsp">You are on the /index.jsp page</a></li>
+			<li class="active"><a href="./index.jsp">You are on the /index.jsp page</a></li>
 			<li><a href="<%=request.getContextPath()%>/protected/index.jsp">Call the /protected/index.jsp page</a></li>
 			<!-- #### change with your own CAS server and your host name #### -->
 			<li><a href="http://localhost:8888/cas/logout?service=http://localhost:8080">Call the CAS logout</a></li>

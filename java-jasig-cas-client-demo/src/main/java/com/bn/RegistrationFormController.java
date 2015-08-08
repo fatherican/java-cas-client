@@ -5,6 +5,8 @@ import com.google.code.kaptcha.Producer;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.jasig.cas.client.util.UserInfoHolder;
+import org.jasig.cas.client.validation.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,9 @@ public class RegistrationFormController {
                         HttpServletResponse response) throws Exception {
             String captchaId = (String) request.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
             String captcha =  request.getParameter("captcha");
+
+            UserInfo userInfo = UserInfoHolder.getUserInfo();
+            System.out.println("userInfo:"  + userInfo);
 
             if (log.isDebugEnabled()) {
                 log.debug("Validating captcha response: '" + response + "'");

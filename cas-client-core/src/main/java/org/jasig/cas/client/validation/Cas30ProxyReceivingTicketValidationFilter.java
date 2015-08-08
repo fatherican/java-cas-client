@@ -18,12 +18,16 @@
  */
 package org.jasig.cas.client.validation;
 
+import com.alibaba.fastjson.JSONObject;
 import org.jasig.cas.client.Protocol;
+import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.springframework.web.util.CookieGenerator;
 
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * Creates either a Cas30ProxyTicketValidator or a Cas30ServiceTicketValidator depending on whether any of the
@@ -37,29 +41,18 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivingTicketValidationFilter {
 
-//    private C
+    /**
+     * 存放CAS服务器端用户属性  和 客户端CAS 服务器端用户属性的对应关系,可以添加更多的属性.
+     */
+    private UserPair[] userPairAttributes = {new UserPair("userName","username"),new UserPair("userId","userId")};
+
+
+    private CookieRetrievingCookieGenerator cookieGenerator;
 
     public Cas30ProxyReceivingTicketValidationFilter() {
         super(Protocol.CAS3);
         this.defaultServiceTicketValidatorClass = Cas30ServiceTicketValidator.class;
         this.defaultProxyTicketValidatorClass = Cas30ProxyTicketValidator.class;
-    }
-
-    @Override
-    public void init() {
-        super.init();
-
-    }
-
-    /**
-     * 初始化cookieGenerator和Json WEB TOKEN相关信息.
-     * @param filterConfig
-     * @throws ServletException
-     */
-    @Override
-    protected void initInternal(FilterConfig filterConfig) throws ServletException {
-        super.initInternal(filterConfig);
-
     }
 
 
@@ -72,6 +65,26 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
     @Override
     protected void onSuccessfulValidation(HttpServletRequest request, HttpServletResponse response, Assertion assertion) {
         super.onSuccessfulValidation(request, response, assertion);
+        Map<String, Object> userInfoMap = assertion.getPrincipal().getAttributes();
+        StringBuffer userInfoJson = new StringBuffer("{");
+        for(UserPair up : userPairAttributes){
+            userInfoJson.append("\"" + up.getClientUserKey() + "\"" + ":");
+            userInfoJson.append("\"" + (userInfoMap.get(up.getCasUserKey()) != null ? userInfoMap.get(up.getCasUserKey()).toString() : "") + "\",");
+        }
+        userInfoJson.append("}");
+        //将userInfo json字符串转化成Userinfo对象
+        final UserInfo ui = JSONObject.parseObject(userInfoJson.toString(),UserInfo.class);
+        //设置用户 授权 登录时间，并且保存到requet域中，当UserInfoHoldFilter接收到该值后就会重新初始化
+        ui.setValidateDate(new Date());
+        request.setAttribute(AbstractCasFilter.CONST_CAS_USERINFO, ui);
+        cookieGenerator.addCookie(request, response, JSONObject.toJSONString(ui));
+    }
 
+    public CookieGenerator getCookieGenerator() {
+        return cookieGenerator;
+    }
+
+    public void setCookieGenerator(CookieRetrievingCookieGenerator cookieGenerator) {
+        this.cookieGenerator = cookieGenerator;
     }
 }

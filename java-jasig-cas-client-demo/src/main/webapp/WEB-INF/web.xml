@@ -75,10 +75,14 @@
 	<!-- #### change with your own CAS server and your host name #### -->
 	<!--为了能让web 的原生Filter类注入Spring 对象，此处使用代理的方式来处理，filer的初始化依然依托于WEB容器而不依赖于-->
 	<!--spring容器，这样就可以达到init 和 destory 依然由 web容器管理-->
-
+	<!--org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter-->
 	<filter>
-		<filter-name>CAS Validation Filter</filter-name>
-		<filter-class>org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter</filter-class>
+		<filter-name>CasValidationFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
 			<param-value>https://cas.com:8443/cas</param-value>
@@ -93,36 +97,9 @@
 		</init-param>
 	</filter>
 	<filter-mapping>
-		<filter-name>CAS Validation Filter</filter-name>
+		<filter-name>CasValidationFilter</filter-name>
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
-
-
-
-
-
-	<!--<filter>-->
-		<!--<filter-name>CAS Validation Filter</filter-name>-->
-		<!--<filter-class>org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter</filter-class>-->
-		<!--<init-param>-->
-			<!--<param-name>casServerUrlPrefix</param-name>-->
-			<!--<param-value>https://cas.com:8443/cas</param-value>-->
-		<!--</init-param>-->
-		<!--<init-param>-->
-			<!--<param-name>serverName</param-name>-->
-			<!--<param-value>http://client1.com:8081</param-value>-->
-		<!--</init-param>-->
-		<!--<init-param>-->
-			<!--<param-name>redirectAfterValidation</param-name>-->
-			<!--<param-value>false</param-value>-->
-		<!--</init-param>-->
-	<!--</filter>-->
-	<!--<filter-mapping>-->
-		<!--<filter-name>CAS Validation Filter</filter-name>-->
-		<!--<url-pattern>*</url-pattern>-->
-	<!--</filter-mapping>-->
-
-
 
 
 
@@ -137,6 +114,23 @@
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
 
+	<filter>
+		<filter-name>UserInfoThreadLocalFilter</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+		<init-param>
+			<param-name>targetFilterLifecycle</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>UserInfoThreadLocalFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+
+
+	<!--验证登录结果，如果登录成功则初始化Session到本地，否则提示失败原因-->
 	<servlet>
 		<servlet-name>validateLogin</servlet-name>
 		<servlet-class>org.jasig.cas.client.servlet.ValidateLoginServlet</servlet-class>
@@ -145,6 +139,9 @@
 		<servlet-name>validateLogin</servlet-name>
 		<url-pattern>/validateLogin</url-pattern>
 	</servlet-mapping>
+
+
+
 
 
 	<servlet>

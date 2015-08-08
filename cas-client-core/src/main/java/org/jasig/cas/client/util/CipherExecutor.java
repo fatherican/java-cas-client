@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.jasig.cas.client.support;
+package org.jasig.cas.client.util;
 
 /**
  * Responsible to define operation that deal with encryption, signing

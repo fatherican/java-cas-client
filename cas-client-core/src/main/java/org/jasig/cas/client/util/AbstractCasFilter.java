@@ -44,6 +44,8 @@ public abstract class AbstractCasFilter extends AbstractConfigurationFilter {
     
     /** Represents the constant for where the assertion will be located in memory. */
     public static final String CONST_CAS_ASSERTION = "_const_cas_assertion_";
+    public static final String CONST_CAS_USERINFO = "_const_cas_userinfo_";
+    public static final String CONST_CAS_ISLOGINED = "_const_cas_islogined_";
 
     private Protocol protocol;
 

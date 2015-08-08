@@ -1,18 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
-
-       <!--<bean id="captchaProducer"-->
-             <!--class="com.google.code.kaptcha.impl.DefaultKaptcha">-->
-              <!--<property name="config">-->
-                     <!--<bean class="com.google.code.kaptcha.util.Config">-->
-                            <!--<constructor-arg type="java.util.Properties" value="null"></constructor-arg>-->
-                     <!--</bean>-->
-              <!--</property>-->
-       <!--</bean>-->
-
+        <!--验证码生成器-->
        <bean id="captchaProducer"
              class="com.google.code.kaptcha.impl.DefaultKaptcha">
               <property name="config">
@@ -31,8 +26,25 @@
               </property>
        </bean>
 
+    <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie-->
+    <bean id="CasValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
+            p:cookieGenerator-ref="userInfoCookieGenerator"/>
+    <!--从cookie中获取用户信息-->
+    <bean id="UserInfoThreadLocalFilter" class="org.jasig.cas.client.util.UserInfoThreadLocalFilter"
+          p:cookieGenerator-ref="userInfoCookieGenerator"/>
 
 
+    <!--默认用户的信息存储在客户端一天-->
+    <bean id="userInfoCookieGenerator" class="org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator"
+          c:casCookieValueManager-ref="cookieValueManager"
+          p:cookieSecure="false"
+          p:cookieMaxAge="86400"
+          p:cookieName="UC"
+          p:cookiePath="/"/>
 
+    <bean id="cookieValueManager" class="org.jasig.cas.client.cookie.DefaultCasCookieValueManager"
+            p:cipherExecutor-ref="cipherExecutor"/>
+    <bean id="cipherExecutor" class="org.jasig.cas.client.util.DefaultCipherExecutor"
+            c:secretKeyEncryption="1PbwSbnHeinpkZOSZjuSJ8yYpUrInm5aaV18J2Ar4rM" c:secretKeySigning="szxK-5_eJjs-aUj-64MpUZ-GPPzGLhYPLGl0wrYjYNVAGva2P0lLe6UGKGM7k8dWxsOVGutZWgvmY3l5oVPO3w"/>
 
 </beans>

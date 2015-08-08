@@ -20,7 +20,7 @@
 package org.jasig.cas.client.cookie;
 
 import org.apache.commons.lang3.StringUtils;
-import org.jasig.cas.client.support.CipherExecutor;
+import org.jasig.cas.client.util.CipherExecutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,5 +113,13 @@ public final class DefaultCasCookieValueManager implements CookieValueManager {
                     + request.getHeader("user-agent"));
         }
         return value;
+    }
+
+    public CipherExecutor getCipherExecutor() {
+        return cipherExecutor;
+    }
+
+    public void setCipherExecutor(CipherExecutor cipherExecutor) {
+        this.cipherExecutor = cipherExecutor;
     }
 }
