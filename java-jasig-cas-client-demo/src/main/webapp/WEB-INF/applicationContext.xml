@@ -38,12 +38,12 @@
           p:cookieGenerator-ref="userInfoCookieGenerator"
           p:userInfoClass-ref="usrInfoClass"/>
 
-    <!--casServer 和 client 之间 字段的对应关系 key是本地bean对象属性的名称，value是casServer端user属性的名称-->
+    <!--client 和 之间casServer 用户对象中字段的对应关系 key是本地usr bean对象属性的名称，value是casServer端usr bean对象属性的名称-->
     <util:map id="casServerUserFieldPairToClientUserField">
         <entry key="username" value="userName"/>
         <entry key="userId" value="userId"/>
     </util:map>
-    <!--转换的User对象-->
+    <!--转换的User对象，用户可继承UserInfo对象，获取更多属性-->
     <bean id="usrInfoClass" class="java.lang.Class" factory-method="forName">
         <constructor-arg value="com.bn.MyUserInfo"/>
     </bean>
