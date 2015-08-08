@@ -2,6 +2,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@page import="org.jasig.cas.client.authentication.AttributePrincipalImpl"%>
 <%@ page import="java.util.Enumeration" %>
+<%@ page import="org.jasig.cas.client.util.UserInfoHolder" %>
+<%@ page import="org.jasig.cas.client.validation.UserInfo" %>
 <jsp:include page="WEB-INF/sso.jsp"/>
 <!DOCTYPE html>
 <br>
@@ -119,9 +121,10 @@ password:<input id="password" type="text"/>
 	<div class="container">
 		<ul class="nav nav-tabs">
 			<li class="active"><a href="./index.jsp">You are on the /index.jsp page</a></li>
-			<li><a href="<%=request.getContextPath()%>/protected/index.jsp">Call the /protected/index.jsp page</a></li>
+			<li><a href="<%=request.getContextPath()%>/protected/index.jsp?redirectToUrl=http://www.baidu.com">Call the /protected/index.jsp page</a></li>
 			<!-- #### change with your own CAS server and your host name #### -->
 			<li><a href="http://localhost:8888/cas/logout?service=http://localhost:8080">Call the CAS logout</a></li>
+			<li><a href="<%=request.getContextPath()%>/protected/login.sso?redirectToUrl=http://www.baidu.com">protected Login</a></li>
 		</ul>
 		<h3>
 			<%
@@ -136,11 +139,11 @@ password:<input id="password" type="text"/>
 				}
 
 			%>
-			<% AttributePrincipalImpl user = (AttributePrincipalImpl) request.getUserPrincipal();
+			<% UserInfo user = UserInfoHolder.getUserInfo();
 			if (user != null) { %>
 				<p>remoteUser: <%=request.getRemoteUser()%></p>
-				<p>User: <%=user.getName()%></p>
-				<p>Attributes: <%=user.getAttributes()%></p>
+				<p>User: <%=user.getUsername()%></p>
+				<p>Attributes: <%=user.getUsername()%></p>
 			<% } else { %>
 				<p>Unauthenticated / anonymous user</p>
 			<% } %>

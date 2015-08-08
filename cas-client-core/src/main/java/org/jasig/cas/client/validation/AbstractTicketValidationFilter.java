@@ -171,9 +171,22 @@ public abstract class AbstractTicketValidationFilter extends AbstractCasFilter {
      * @param assertion the successful Assertion from the server.
      */
     protected void onSuccessfulValidation(final HttpServletRequest request, final HttpServletResponse response,
-            final Assertion assertion) {
+            final Assertion assertion) throws IOException {
         // nothing to do here.
     }
+
+    /**
+     * 模板中的钩子方法.
+     *验证成功后是否需要跳转.
+     *
+     * @param request the HttpServletRequest.
+     * @param response the HttpServletResponse.
+     */
+    protected boolean  needRedirect(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+        return false;
+    }
+
+
 
     /**
      * Template method that gets executed if validation fails.  This method is called right after the exception is caught from the ticket validator
@@ -209,10 +222,12 @@ public abstract class AbstractTicketValidationFilter extends AbstractCasFilter {
                 request.setAttribute(CONST_CAS_ASSERTION, assertion);
 
                 if (this.useSession) {
-                    request.getSession().setAttribute(CONST_CAS_ASSERTION, assertion);
+                    request.getSession().setAttribute(CONST_CAS_ISLOGINED, true);
                 }
                 onSuccessfulValidation(request, response, assertion);
-
+                if(needRedirect(request, response)){
+                    return;
+                }
                 if (this.redirectAfterValidation) {
                     logger.debug("Redirecting after successful ticket validation.");
                     response.sendRedirect(constructServiceUrl(request, response));

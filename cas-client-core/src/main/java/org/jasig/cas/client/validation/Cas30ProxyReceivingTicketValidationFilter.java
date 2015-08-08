@@ -19,6 +19,7 @@
 package org.jasig.cas.client.validation;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
 import org.jasig.cas.client.util.AbstractCasFilter;
@@ -26,6 +27,7 @@ import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
@@ -41,6 +43,7 @@ import java.util.Map;
  */
 public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivingTicketValidationFilter {
 
+    private boolean needRedirect = false;
     /**
      * 存放CAS服务器端用户属性  和 客户端CAS 服务器端用户属性的对应关系,可以添加更多的属性.
      */
@@ -63,7 +66,7 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
      * @param assertion the successful Assertion from the server.
      */
     @Override
-    protected void onSuccessfulValidation(HttpServletRequest request, HttpServletResponse response, Assertion assertion) {
+    protected void onSuccessfulValidation(HttpServletRequest request, HttpServletResponse response, Assertion assertion) throws IOException {
         super.onSuccessfulValidation(request, response, assertion);
         Map<String, Object> userInfoMap = assertion.getPrincipal().getAttributes();
         StringBuffer userInfoJson = new StringBuffer("{");
@@ -78,6 +81,13 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
         ui.setValidateDate(new Date());
         request.setAttribute(AbstractCasFilter.CONST_CAS_USERINFO, ui);
         cookieGenerator.addCookie(request, response, JSONObject.toJSONString(ui));
+        //登录成功后跳转的地址
+        String url = request.getParameter("redirectToUrl");
+        if(StringUtils.isNotBlank(url)){
+            response.sendRedirect(url);
+            setNeedRedirect(true);
+            return;
+        }
     }
 
     public CookieGenerator getCookieGenerator() {
@@ -86,5 +96,18 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
 
     public void setCookieGenerator(CookieRetrievingCookieGenerator cookieGenerator) {
         this.cookieGenerator = cookieGenerator;
+    }
+
+    @Override
+    protected boolean needRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return this.needRedirect;
+    }
+
+    public boolean isNeedRedirect() {
+        return needRedirect;
+    }
+
+    public void setNeedRedirect(boolean needRedirect) {
+        this.needRedirect = needRedirect;
     }
 }

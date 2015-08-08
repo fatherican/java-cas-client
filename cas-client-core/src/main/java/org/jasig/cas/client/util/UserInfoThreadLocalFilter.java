@@ -59,7 +59,7 @@ public final class UserInfoThreadLocalFilter implements Filter {
                 final String userInfoJsonStr = cookieGenerator.retrieveCookieValue(request);
                 //登录成功后，从request中获取用户信息，忽略客户端的cookie
                 if ( request.getAttribute(AbstractCasFilter.CONST_CAS_USERINFO) != null){
-                    UserInfoHolder.setUserInfo((UserInfo) request.getAttribute(AbstractCasFilter.CONST_CAS_ASSERTION));
+                    UserInfoHolder.setUserInfo((UserInfo) request.getAttribute(AbstractCasFilter.CONST_CAS_USERINFO));
                 }else{
                     if( userInfoJsonStr != null ){
                         UserInfoHolder.setUserInfo(JSONObject.parseObject(userInfoJsonStr, UserInfo.class));
@@ -68,7 +68,7 @@ public final class UserInfoThreadLocalFilter implements Filter {
 //            }
             filterChain.doFilter(servletRequest, servletResponse);
         } finally {
-            AssertionHolder.clear();
+            UserInfoHolder.clear();
         }
     }
 

@@ -101,19 +101,7 @@
 		<url-pattern>*</url-pattern>
 	</filter-mapping>
 
-
-
-
-	<!-- Put the CAS principal in the HTTP request -->
-	<filter>
-		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
-		<filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
-		<url-pattern>*</url-pattern>
-	</filter-mapping>
-
+	<!--从cookie或request获取用户信息-->
 	<filter>
 		<filter-name>UserInfoThreadLocalFilter</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
@@ -126,6 +114,18 @@
 		<filter-name>UserInfoThreadLocalFilter</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
+
+	<!-- 重新包装request，使其支持remoteUser等方法-->
+	<filter>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<filter-class>org.jasig.cas.client.util.HttpServleUsertRequestWrapperFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+
+
 
 
 
