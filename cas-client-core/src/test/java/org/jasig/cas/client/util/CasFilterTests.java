@@ -18,17 +18,18 @@
  */
 package org.jasig.cas.client.util;
 
-import static org.junit.Assert.assertTrue;
-import java.io.IOException;
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-
 import org.jasig.cas.client.Protocol;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import java.io.IOException;
+
+import static org.junit.Assert.assertTrue;
 
 /**
  * @author Scott Battaglia

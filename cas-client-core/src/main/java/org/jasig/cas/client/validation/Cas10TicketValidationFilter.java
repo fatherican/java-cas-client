@@ -18,12 +18,12 @@
  */
 package org.jasig.cas.client.validation;
 
-import javax.servlet.FilterConfig;
-
 import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.configuration.ConfigurationKeys;
 import org.jasig.cas.client.ssl.HttpURLConnectionFactory;
 import org.jasig.cas.client.ssl.HttpsURLConnectionFactory;
+
+import javax.servlet.FilterConfig;
 
 /**
  * Implementation of AbstractTicketValidatorFilter that creates a Cas10TicketValidator.

@@ -18,15 +18,6 @@
  */
 package org.jasig.cas.client.session;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.zip.Inflater;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.Protocol;
@@ -35,6 +26,14 @@ import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.util.XmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.Arrays;
+import java.util.List;
+import java.util.zip.Inflater;
 
 /**
  * Performs CAS single sign-out operations in an API-agnostic fashion.

@@ -18,12 +18,12 @@
  */
 package org.jasig.cas.client.configuration;
 
-import static org.junit.Assert.assertEquals;
-
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockFilterConfig;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Tests {@link SystemPropertiesConfigurationStrategyImpl}.

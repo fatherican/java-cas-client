@@ -18,8 +18,8 @@
  */
 package org.jasig.cas.client.jaas;
 
-import java.io.IOException;
 import javax.security.auth.callback.*;
+import java.io.IOException;
 
 /**
  * Callback handler that provides the CAS service and ticket to a

@@ -18,13 +18,14 @@
  */
 package org.jasig.cas.client.proxy;
 
-import java.net.URL;
-import java.net.URLEncoder;
 import org.jasig.cas.client.ssl.HttpURLConnectionFactory;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.util.XmlUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.net.URL;
+import java.net.URLEncoder;
 
 /**
  * Implementation of a ProxyRetriever that follows the CAS 2.0 specification.

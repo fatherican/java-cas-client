@@ -18,15 +18,15 @@
  */
 package org.jasig.cas.client.util;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-
 import junit.framework.TestCase;
 import org.jasig.cas.client.PublicTestHttpServer;
 import org.jasig.cas.client.ssl.HttpsURLConnectionFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Tests for the CommonUtils.

@@ -18,11 +18,11 @@
  */
 package org.jasig.cas.client.session;
 
+import org.apache.commons.codec.binary.Base64;
+
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.zip.Deflater;
-
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * Logout message generator to perform tests on Single Sign Out feature.

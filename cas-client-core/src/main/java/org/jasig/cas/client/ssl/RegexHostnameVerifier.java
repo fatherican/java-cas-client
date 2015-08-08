@@ -19,10 +19,10 @@
 
 package org.jasig.cas.client.ssl;
 
-import java.io.Serializable;
-import java.util.regex.Pattern;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
+import java.io.Serializable;
+import java.util.regex.Pattern;
 
 /**
  * Validates an SSL peer's hostname using a regular expression that a candidate

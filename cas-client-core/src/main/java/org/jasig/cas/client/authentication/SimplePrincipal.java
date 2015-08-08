@@ -18,9 +18,10 @@
  */
 package org.jasig.cas.client.authentication;
 
+import org.jasig.cas.client.util.CommonUtils;
+
 import java.io.Serializable;
 import java.security.Principal;
-import org.jasig.cas.client.util.CommonUtils;
 
 /**
  * Simple security principal implementation.

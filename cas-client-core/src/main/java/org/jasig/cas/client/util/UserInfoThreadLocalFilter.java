@@ -20,11 +20,9 @@ package org.jasig.cas.client.util;
 
 import com.alibaba.fastjson.JSONObject;
 import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
-import org.jasig.cas.client.validation.Assertion;
 import org.jasig.cas.client.validation.UserInfo;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

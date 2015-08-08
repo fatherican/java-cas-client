@@ -18,15 +18,17 @@
  */
 package org.jasig.cas.client.validation;
 
-import static org.junit.Assert.*;
-import java.io.UnsupportedEncodingException;
-import java.util.List;
 import org.jasig.cas.client.PublicTestHttpServer;
 import org.jasig.cas.client.proxy.ProxyGrantingTicketStorage;
 import org.jasig.cas.client.proxy.ProxyGrantingTicketStorageImpl;
 import org.jasig.cas.client.proxy.ProxyRetriever;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 /**
  * Test cases for the {@link Cas20ServiceTicketValidator}.

@@ -18,11 +18,12 @@
  */
 package org.jasig.cas.client.util;
 
-import java.io.IOException;
+import org.jasig.cas.client.validation.Assertion;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import org.jasig.cas.client.validation.Assertion;
+import java.io.IOException;
 
 /**
  * Places the assertion in a ThreadLocal such that other resources can access it that do not have access to the web tier session.

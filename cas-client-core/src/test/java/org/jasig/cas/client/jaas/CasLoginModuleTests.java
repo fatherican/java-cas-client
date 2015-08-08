@@ -18,19 +18,21 @@
  */
 package org.jasig.cas.client.jaas;
 
-import static org.junit.Assert.*;
-import java.security.Principal;
-import java.security.acl.Group;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import javax.security.auth.Subject;
-import javax.security.auth.login.LoginException;
 import org.jasig.cas.client.PublicTestHttpServer;
 import org.jasig.cas.client.validation.TicketValidationException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginException;
+import java.security.Principal;
+import java.security.acl.Group;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+
+import static org.junit.Assert.*;
 
 /**
  * Unit test for {@link CasLoginModule} class.

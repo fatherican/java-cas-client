@@ -18,8 +18,9 @@
  */
 package org.jasig.cas.client.jaas;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
+import org.jasig.cas.client.Protocol;
+import org.jasig.cas.client.util.AbstractCasFilter;
+import org.jasig.cas.client.util.CommonUtils;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -28,10 +29,8 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.jasig.cas.client.Protocol;
-import org.jasig.cas.client.util.AbstractCasFilter;
-import org.jasig.cas.client.util.CommonUtils;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 /**
  * Servlet filter performs a programmatic JAAS login using the Servlet 3.0 HttpServletRequest#login() facility.

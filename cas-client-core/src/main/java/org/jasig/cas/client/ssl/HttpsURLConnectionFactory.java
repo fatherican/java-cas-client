@@ -18,15 +18,16 @@
  */
 package org.jasig.cas.client.ssl;
 
+import org.jasig.cas.client.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.security.KeyStore;
 import java.util.Properties;
-import javax.net.ssl.*;
-import org.jasig.cas.client.util.CommonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of the {@link HttpURLConnectionFactory} whose responsible to configure

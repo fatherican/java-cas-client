@@ -18,11 +18,12 @@
  */
 package org.jasig.cas.client.session;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * HashMap backed implementation of SessionMappingStorage.

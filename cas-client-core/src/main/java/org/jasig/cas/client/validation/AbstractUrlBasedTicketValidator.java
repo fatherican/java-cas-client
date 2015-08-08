@@ -18,17 +18,18 @@
  */
 package org.jasig.cas.client.validation;
 
+import org.jasig.cas.client.ssl.HttpURLConnectionFactory;
+import org.jasig.cas.client.ssl.HttpsURLConnectionFactory;
+import org.jasig.cas.client.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
-import org.jasig.cas.client.ssl.HttpURLConnectionFactory;
-import org.jasig.cas.client.ssl.HttpsURLConnectionFactory;
-import org.jasig.cas.client.util.CommonUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Abstract validator implementation for tickets that must be validated against a server.

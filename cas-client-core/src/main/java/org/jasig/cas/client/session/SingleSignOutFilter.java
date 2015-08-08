@@ -18,15 +18,14 @@
  */
 package org.jasig.cas.client.session;
 
-import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.jasig.cas.client.configuration.ConfigurationKeys;
 import org.jasig.cas.client.util.AbstractConfigurationFilter;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Implements the Single Sign Out protocol.  It handles registering the session and destroying the session.

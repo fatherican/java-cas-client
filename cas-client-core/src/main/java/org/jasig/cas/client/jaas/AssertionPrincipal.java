@@ -18,9 +18,10 @@
  */
 package org.jasig.cas.client.jaas;
 
-import java.io.Serializable;
 import org.jasig.cas.client.authentication.SimplePrincipal;
 import org.jasig.cas.client.validation.Assertion;
+
+import java.io.Serializable;
 
 /**
  * Principal implementation that contains the CAS ticket validation assertion.

@@ -18,11 +18,12 @@
  */
 package org.jasig.cas.client.authentication;
 
-import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
+
+import static org.junit.Assert.*;
 
 public class FacesCompatibleAuthenticationRedirectStrategyTests {
 

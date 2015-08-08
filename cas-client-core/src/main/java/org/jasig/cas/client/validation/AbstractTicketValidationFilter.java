@@ -18,19 +18,19 @@
  */
 package org.jasig.cas.client.validation;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-import javax.net.ssl.HostnameVerifier;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.configuration.ConfigurationKeys;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.util.ReflectUtils;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 /**
  * The filter that handles all the work of validating ticket requests.

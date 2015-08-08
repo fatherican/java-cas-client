@@ -18,8 +18,6 @@
  */
 package org.jasig.cas.client.validation;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import junit.framework.TestCase;
 import org.jasig.cas.client.proxy.CleanUpTimerTask;
 import org.jasig.cas.client.proxy.ProxyGrantingTicketStorage;
@@ -28,6 +26,9 @@ import org.jasig.cas.client.util.MethodFlag;
 import org.junit.Test;
 import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockServletContext;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Unit test for {@link org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter}

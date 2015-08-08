@@ -18,6 +18,19 @@
  */
 package org.jasig.cas.client.jaas;
 
+import org.jasig.cas.client.authentication.SimpleGroup;
+import org.jasig.cas.client.authentication.SimplePrincipal;
+import org.jasig.cas.client.util.CommonUtils;
+import org.jasig.cas.client.util.ReflectUtils;
+import org.jasig.cas.client.validation.Assertion;
+import org.jasig.cas.client.validation.TicketValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.security.auth.Subject;
+import javax.security.auth.callback.*;
+import javax.security.auth.login.LoginException;
+import javax.security.auth.spi.LoginModule;
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -27,18 +40,6 @@ import java.security.Principal;
 import java.security.acl.Group;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import javax.security.auth.Subject;
-import javax.security.auth.callback.*;
-import javax.security.auth.login.LoginException;
-import javax.security.auth.spi.LoginModule;
-import org.jasig.cas.client.authentication.SimpleGroup;
-import org.jasig.cas.client.authentication.SimplePrincipal;
-import org.jasig.cas.client.util.CommonUtils;
-import org.jasig.cas.client.util.ReflectUtils;
-import org.jasig.cas.client.validation.Assertion;
-import org.jasig.cas.client.validation.TicketValidator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * JAAS login module that delegates to a CAS {@link TicketValidator} component

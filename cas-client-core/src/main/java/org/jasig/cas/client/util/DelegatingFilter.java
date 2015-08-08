@@ -18,12 +18,13 @@
  */
 package org.jasig.cas.client.util;
 
-import java.io.IOException;
-import java.util.Map;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.*;
+import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * A Delegating Filter looks up a parameter in the request object and matches

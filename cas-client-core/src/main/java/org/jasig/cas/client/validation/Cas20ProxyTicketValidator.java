@@ -18,9 +18,10 @@
  */
 package org.jasig.cas.client.validation;
 
+import org.jasig.cas.client.util.XmlUtils;
+
 import java.util.Arrays;
 import java.util.List;
-import org.jasig.cas.client.util.XmlUtils;
 
 /**
  * Extension to the traditional Service Ticket validation that will validate service tickets and proxy tickets.

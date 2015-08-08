@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.springframework.mock.web.MockFilterConfig;
 import org.springframework.mock.web.MockServletContext;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public final class WebXmlConfigurationStrategyImplTests {
 

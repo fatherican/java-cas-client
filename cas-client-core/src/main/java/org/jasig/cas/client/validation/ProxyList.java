@@ -18,10 +18,11 @@
  */
 package org.jasig.cas.client.validation;
 
+import org.jasig.cas.client.util.CommonUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import org.jasig.cas.client.util.CommonUtils;
 
 /**
  * Holding class for the proxy list to make Spring configuration easier.

@@ -27,7 +27,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
 
 import javax.servlet.FilterChain;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public final class ErrorRedirectFilterTests {
 

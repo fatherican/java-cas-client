@@ -18,15 +18,15 @@
  */
 package org.jasig.cas.client.util;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-
 import org.jasig.cas.client.configuration.ConfigurationKey;
 import org.jasig.cas.client.configuration.ConfigurationStrategy;
 import org.jasig.cas.client.configuration.ConfigurationStrategyName;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.Filter;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
 
 /**
  * Abstracts out the ability to configure the filters from the initial properties provided.

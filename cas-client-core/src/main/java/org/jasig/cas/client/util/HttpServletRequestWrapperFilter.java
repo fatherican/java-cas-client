@@ -18,16 +18,17 @@
  */
 package org.jasig.cas.client.util;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Collection;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.configuration.ConfigurationKeys;
+import org.jasig.cas.client.validation.Assertion;
+
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletRequestWrapper;
 import javax.servlet.http.HttpSession;
-import org.jasig.cas.client.authentication.AttributePrincipal;
-import org.jasig.cas.client.configuration.ConfigurationKeys;
-import org.jasig.cas.client.validation.Assertion;
+import java.io.IOException;
+import java.security.Principal;
+import java.util.Collection;
 
 /**
  * Implementation of a filter that wraps the normal HttpServletRequest with a

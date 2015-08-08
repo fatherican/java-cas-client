@@ -18,9 +18,10 @@
  */
 package org.jasig.cas.client.proxy;
 
-import java.util.TimerTask;
 import junit.framework.TestCase;
 import org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter;
+
+import java.util.TimerTask;
 
 /**
  * Unit test for the {@link CleanUpTimerTask}

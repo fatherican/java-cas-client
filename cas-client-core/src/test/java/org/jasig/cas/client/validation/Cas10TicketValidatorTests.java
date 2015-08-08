@@ -18,11 +18,13 @@
  */
 package org.jasig.cas.client.validation;
 
-import static org.junit.Assert.*;
-import java.io.UnsupportedEncodingException;
 import org.jasig.cas.client.PublicTestHttpServer;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.io.UnsupportedEncodingException;
+
+import static org.junit.Assert.*;
 
 /**
  * Test cases for the {@link Cas10TicketValidator}.
