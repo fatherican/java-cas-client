@@ -39,7 +39,7 @@
 			<p>remoteUser: <%=request.getRemoteUser()%></p>
 			<p>User: <%=user.getUsername()%></p>
 			<p>Attributes: <%=user.getUsername()%></p>
-			<p>ID: <%=user.getUserId()%></p>
+			<%--<p>ID: <%=user.getUserId()%></p>--%>
 			<% } else { %>
 			<p>Unauthenticated / anonymous user</p>
 			<% } %>

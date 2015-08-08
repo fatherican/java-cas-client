@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Creates either a Cas30ProxyTicketValidator or a Cas30ServiceTicketValidator depending on whether any of the
@@ -48,6 +49,8 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
      * 存放CAS服务器端用户属性  和 客户端CAS 服务器端用户属性的对应关系,可以添加更多的属性.
      */
     private UserPair[] userPairAttributes = {new UserPair("userName","username"),new UserPair("userId","userId")};
+    private Map<String,String> casServerUserFieldPairToClientUserField;
+    private Class<? extends UserInfo> userClass;
 
 
     private CookieRetrievingCookieGenerator cookieGenerator;
@@ -70,13 +73,14 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
         super.onSuccessfulValidation(request, response, assertion);
         Map<String, Object> userInfoMap = assertion.getPrincipal().getAttributes();
         StringBuffer userInfoJson = new StringBuffer("{");
-        for(UserPair up : userPairAttributes){
-            userInfoJson.append("\"" + up.getClientUserKey() + "\"" + ":");
-            userInfoJson.append("\"" + (userInfoMap.get(up.getCasUserKey()) != null ? userInfoMap.get(up.getCasUserKey()).toString() : "") + "\",");
+        Set<Map.Entry<String, String>> pairedSet = casServerUserFieldPairToClientUserField.entrySet();
+        for (Map.Entry<String, String> stringStringEntry : pairedSet) {
+            userInfoJson.append("\"" + stringStringEntry.getKey() + "\"" + ":");
+            userInfoJson.append("\"" + (userInfoMap.get(stringStringEntry.getValue()) != null ? userInfoMap.get(stringStringEntry.getValue()).toString() : "") + "\",");
         }
         userInfoJson.append("}");
         //将userInfo json字符串转化成Userinfo对象
-        final UserInfo ui = JSONObject.parseObject(userInfoJson.toString(),UserInfo.class);
+        final UserInfo ui = JSONObject.parseObject(userInfoJson.toString(),userClass);
         //设置用户 授权 登录时间，并且保存到requet域中，当UserInfoHoldFilter接收到该值后就会重新初始化
         ui.setValidateDate(new Date());
         request.setAttribute(AbstractCasFilter.CONST_CAS_USERINFO, ui);
@@ -109,5 +113,29 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
 
     public void setNeedRedirect(boolean needRedirect) {
         this.needRedirect = needRedirect;
+    }
+
+    public UserPair[] getUserPairAttributes() {
+        return userPairAttributes;
+    }
+
+    public void setUserPairAttributes(UserPair[] userPairAttributes) {
+        this.userPairAttributes = userPairAttributes;
+    }
+
+    public Class getUserClass() {
+        return userClass;
+    }
+
+    public void setUserClass(Class userClass) {
+        this.userClass = userClass;
+    }
+
+    public Map<String, String> getCasServerUserFieldPairToClientUserField() {
+        return casServerUserFieldPairToClientUserField;
+    }
+
+    public void setCasServerUserFieldPairToClientUserField(Map<String, String> casServerUserFieldPairToClientUserField) {
+        this.casServerUserFieldPairToClientUserField = casServerUserFieldPairToClientUserField;
     }
 }

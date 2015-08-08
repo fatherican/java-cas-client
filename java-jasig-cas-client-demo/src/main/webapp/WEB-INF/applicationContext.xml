@@ -3,8 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="
           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
         <!--验证码生成器-->
@@ -28,10 +30,24 @@
 
     <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie-->
     <bean id="CasValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
-            p:cookieGenerator-ref="userInfoCookieGenerator"/>
+            p:cookieGenerator-ref="userInfoCookieGenerator"
+            p:casServerUserFieldPairToClientUserField-ref="casServerUserFieldPairToClientUserField"
+            p:userClass-ref="usrInfoClass"/>
     <!--从cookie中获取用户信息-->
     <bean id="UserInfoThreadLocalFilter" class="org.jasig.cas.client.util.UserInfoThreadLocalFilter"
-          p:cookieGenerator-ref="userInfoCookieGenerator"/>
+          p:cookieGenerator-ref="userInfoCookieGenerator"
+          p:userInfoClass-ref="usrInfoClass"/>
+
+    <!--casServer 和 client 之间 字段的对应关系 key是本地bean对象属性的名称，value是casServer端user属性的名称-->
+    <util:map id="casServerUserFieldPairToClientUserField">
+        <entry key="username" value="userName"/>
+        <entry key="userId" value="userId"/>
+    </util:map>
+    <!--转换的User对象-->
+    <bean id="usrInfoClass" class="java.lang.Class" factory-method="forName">
+        <constructor-arg value="com.bn.MyUserInfo"/>
+    </bean>
+
 
 
     <!--默认用户的信息存储在客户端一天-->

@@ -39,6 +39,8 @@ import java.io.IOException;
  */
 public final class UserInfoThreadLocalFilter implements Filter {
 
+    private Class<? extends UserInfo> userInfoClass;
+
     private CookieRetrievingCookieGenerator cookieGenerator;
 
 
@@ -62,7 +64,7 @@ public final class UserInfoThreadLocalFilter implements Filter {
                     UserInfoHolder.setUserInfo((UserInfo) request.getAttribute(AbstractCasFilter.CONST_CAS_USERINFO));
                 }else{
                     if( userInfoJsonStr != null ){
-                        UserInfoHolder.setUserInfo(JSONObject.parseObject(userInfoJsonStr, UserInfo.class));
+                        UserInfoHolder.setUserInfo(JSONObject.parseObject(userInfoJsonStr, userInfoClass));
                     }
                 }
 //            }
@@ -83,5 +85,13 @@ public final class UserInfoThreadLocalFilter implements Filter {
 
     public void setCookieGenerator(CookieRetrievingCookieGenerator cookieGenerator) {
         this.cookieGenerator = cookieGenerator;
+    }
+
+    public Class<? extends UserInfo> getUserInfoClass() {
+        return userInfoClass;
+    }
+
+    public void setUserInfoClass(Class<? extends UserInfo> userInfoClass) {
+        this.userInfoClass = userInfoClass;
     }
 }
