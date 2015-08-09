@@ -18,7 +18,7 @@
 			<li><a href="<%=request.getContextPath()%>/index.jsp">Call the /index.jsp page</a></li>
 			<li class="active"><a href="<%=request.getContextPath()%>/protected/index.jsp">You are on the /protected/index.jsp page</a></li>
 			<!-- #### change with your own CAS server and your host name #### -->
-			<li><a href="https://cas.com:8443/cas/logout?service=http://<%=request.getContextPath()%>">Call the CAS logout</a></li>
+			<li><a href="https://cas.com:8443/cas/logout?service=http://client1.com:8081/client">Call the CAS logout</a></li>
 			<li><a href="<%=request.getContextPath()%>/protected/login.sso?redirectToUrl=http://www.baidu.com">protected Login</a></li>
 		</ul>
 		<h3>

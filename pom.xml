@@ -215,6 +215,11 @@
                 <artifactId>kaptcha</artifactId>
                 <version>${kaptcha.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+               <version>${fast-json.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -250,11 +255,7 @@
             <version>${slf4j.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.1.15</version>
-        </dependency>
+
 
     </dependencies>
 
