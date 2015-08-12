@@ -41,11 +41,11 @@ public final class SingleSignOutHttpSessionListener implements HttpSessionListen
     }
 
     public void sessionDestroyed(final HttpSessionEvent event) {
-        if (sessionMappingStorage == null) {
+      /*  if (sessionMappingStorage == null) {
             sessionMappingStorage = getSessionMappingStorage();
         }
         final HttpSession session = event.getSession();
-        sessionMappingStorage.removeBySessionById(session.getId());
+        sessionMappingStorage.removeBySessionById(session.getId());*/
     }
 
     /**
@@ -54,7 +54,7 @@ public final class SingleSignOutHttpSessionListener implements HttpSessionListen
      * 
      * @return the SessionMappingStorage
      */
-    protected static SessionMappingStorage getSessionMappingStorage() {
+   /* protected static SessionMappingStorage getSessionMappingStorage() {
         return SingleSignOutFilter.getSingleSignOutHandler().getSessionMappingStorage();
-    }
+    }*/
 }

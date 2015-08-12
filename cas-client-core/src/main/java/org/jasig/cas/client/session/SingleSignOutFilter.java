@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class SingleSignOutFilter extends AbstractConfigurationFilter {
 
-    private static final SingleSignOutHandler HANDLER = new SingleSignOutHandler();
+    private   SingleSignOutHandler HANDLER;
 
     private AtomicBoolean handlerInitialized = new AtomicBoolean(false);
 
@@ -101,7 +101,13 @@ public final class SingleSignOutFilter extends AbstractConfigurationFilter {
         // nothing to do
     }
 
-    protected static SingleSignOutHandler getSingleSignOutHandler() {
+
+    public SingleSignOutHandler getHANDLER() {
         return HANDLER;
     }
+
+    public void setHANDLER(SingleSignOutHandler HANDLER) {
+        this.HANDLER = HANDLER;
+    }
+
 }

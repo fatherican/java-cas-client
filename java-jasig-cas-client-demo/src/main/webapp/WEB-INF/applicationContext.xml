@@ -28,11 +28,31 @@
               </property>
        </bean>
 
+
+
+
     <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie-->
+    <bean id="CASSingleSignOutFilter" class="org.jasig.cas.client.session.SingleSignOutFilter"
+         p:HANDLER-ref="logoutHandler"/>
+    <!--处理登出的实现-->
+    <bean id="logoutHandler" class="org.jasig.cas.client.session.SingleSignOutHandler"
+          p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
+          p:userInfoCookieGenerator-ref="userInfoCookieGenerator"/>
+
+    <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie-->
+    <bean id="CASAuthenticationFilter" class="org.jasig.cas.client.authentication.AuthenticationFilter"
+          p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
+          p:userInfoCookieGenerator-ref="userInfoCookieGenerator"
+            />
+
+    <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie,不使用Session-->
     <bean id="CasValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
-            p:cookieGenerator-ref="userInfoCookieGenerator"
+            p:userInfoCookieGenerator-ref="userInfoCookieGenerator"
+            p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
             p:casServerUserFieldPairToClientUserField-ref="casServerUserFieldPairToClientUserField"
+            p:useSession="false"
             p:userClass-ref="usrInfoClass"/>
+
     <!--从cookie中获取用户信息-->
     <bean id="UserInfoThreadLocalFilter" class="org.jasig.cas.client.util.UserInfoThreadLocalFilter"
           p:cookieGenerator-ref="userInfoCookieGenerator"
@@ -43,24 +63,38 @@
         <entry key="username" value="userName"/>
         <entry key="userId" value="userId"/>
     </util:map>
+
     <!--转换的User对象，用户可继承UserInfo对象，获取更多属性-->
     <bean id="usrInfoClass" class="java.lang.Class" factory-method="forName">
         <constructor-arg value="com.bn.MyUserInfo"/>
     </bean>
 
-
-
     <!--默认用户的信息存储在客户端一天-->
     <bean id="userInfoCookieGenerator" class="org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator"
-          c:casCookieValueManager-ref="cookieValueManager"
+          c:casCookieValueManager-ref="userInfoCookieValueManager"
           p:cookieSecure="false"
           p:cookieMaxAge="86400"
           p:cookieName="UC"
-          p:cookiePath="/"/>
+          p:cookiePath="/client1"/>
 
-    <bean id="cookieValueManager" class="org.jasig.cas.client.cookie.DefaultCasCookieValueManager"
-            p:cipherExecutor-ref="cipherExecutor"/>
-    <bean id="cipherExecutor" class="org.jasig.cas.client.util.DefaultCipherExecutor"
-            c:secretKeyEncryption="1PbwSbnHeinpkZOSZjuSJ8yYpUrInm5aaV18J2Ar4rM" c:secretKeySigning="szxK-5_eJjs-aUj-64MpUZ-GPPzGLhYPLGl0wrYjYNVAGva2P0lLe6UGKGM7k8dWxsOVGutZWgvmY3l5oVPO3w"/>
+    <bean id="userInfoCookieValueManager" class="org.jasig.cas.client.cookie.DefaultCasCookieValueManager"
+          p:cipherExecutor-ref="userInfoCipherExecutor"/>
+
+    <bean id="userInfoCipherExecutor" class="org.jasig.cas.client.util.DefaultCipherExecutor"
+          c:secretKeyEncryption="1PbwSbnHeinpkZOSZjuSJ8yYpUrInm5aaV18J2Ar4rM" c:secretKeySigning="szxK-5_eJjs-aUj-64MpUZ-GPPzGLhYPLGl0wrYjYNVAGva2P0lLe6UGKGM7k8dWxsOVGutZWgvmY3l5oVPO3w"/>
+
+    <!--用户是否登录的标识-->
+    <bean id="userLoginedFlagCookieGenerator" class="org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator"
+          c:casCookieValueManager-ref="userLoginFlagCookieValueManager"
+          p:cookieSecure="false"
+          p:cookieMaxAge="-1"
+          p:cookieName="ULF"
+          p:cookiePath="/client1"/>
+
+    <bean id="userLoginFlagCookieValueManager" class="org.jasig.cas.client.cookie.DefaultCasCookieValueManager"
+          p:cipherExecutor-ref="userLoginFlagCipherExecutor"/>
+
+    <bean id="userLoginFlagCipherExecutor" class="org.jasig.cas.client.util.DefaultCipherExecutor"
+          c:secretKeyEncryption="1PbwSbnHeinpkZOSZjuSJ8yYpUrInm5aaV18J2Ar4rM" c:secretKeySigning="szxK-5_eJjs-aUj-64MpUZ-GPPzGLhYPLGl0wrYjYNVAGva2P0lLe6UGKGM7k8dWxsOVGutZWgvmY3l5oVPO3w"/>
 
 </beans>

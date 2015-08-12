@@ -22,6 +22,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.configuration.ConfigurationKeys;
+import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.util.XmlUtils;
 import org.slf4j.Logger;
@@ -44,6 +45,14 @@ import java.util.zip.Inflater;
  *
  */
 public final class SingleSignOutHandler {
+    /**
+     * 用户是否已经登录的标识的生成.
+     */
+    private CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator;
+    /**
+     * 用户详细信息cookie生成器.
+     */
+    private CookieRetrievingCookieGenerator  userInfoCookieGenerator;
 
     private final static int DECOMPRESSION_FACTOR = 10;
 
@@ -210,7 +219,9 @@ public final class SingleSignOutHandler {
 
         } else if (isFrontChannelLogoutRequest(request)) {
             logger.trace("Received a front channel logout request");
-            destroySession(request);
+            //不需要清空session，只需要清空cookie
+//            destroySession(request);
+            destoryUserCookie(request, response);
             // redirection url to the CAS server
             final String redirectionUrl = computeRedirectionToServer(request);
             if (redirectionUrl != null) {
@@ -315,6 +326,16 @@ public final class SingleSignOutHandler {
     }
 
     /**
+     * Destroys the current HTTP user Cookie for the given CAS logout request.
+     *
+     * @param request HTTP request containing a CAS logout message.
+     */
+    private void destoryUserCookie(final HttpServletRequest request, final HttpServletResponse response) {
+        userInfoCookieGenerator.removeCookie(response);
+        userLoginedFlagCookieGenerator.removeCookie(response);
+    }
+
+    /**
      * Compute the redirection url to the CAS server when it's a front channel SLO
      * (depending on the relay state parameter).
      *
@@ -378,5 +399,21 @@ public final class SingleSignOutHandler {
                 logger.debug("Error performing request.logout.");
             }
         }
+    }
+
+    public CookieRetrievingCookieGenerator getUserLoginedFlagCookieGenerator() {
+        return userLoginedFlagCookieGenerator;
+    }
+
+    public void setUserLoginedFlagCookieGenerator(CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator) {
+        this.userLoginedFlagCookieGenerator = userLoginedFlagCookieGenerator;
+    }
+
+    public CookieRetrievingCookieGenerator getUserInfoCookieGenerator() {
+        return userInfoCookieGenerator;
+    }
+
+    public void setUserInfoCookieGenerator(CookieRetrievingCookieGenerator userInfoCookieGenerator) {
+        this.userInfoCookieGenerator = userInfoCookieGenerator;
     }
 }

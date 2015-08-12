@@ -107,6 +107,10 @@
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.bn.framework</groupId>
+            <artifactId>bn-framework-common</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

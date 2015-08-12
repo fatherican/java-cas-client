@@ -220,6 +220,11 @@
                 <artifactId>fastjson</artifactId>
                <version>${fast-json.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.bn.framework</groupId>
+                <artifactId>bn-framework-common</artifactId>
+                <version>${bn-framework-common.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -281,5 +286,6 @@
         <commons-lang.version>3.4</commons-lang.version>
         <kaptcha.version>0.0.9</kaptcha.version>
         <fast-json.version>1.1.15</fast-json.version>
+        <bn-framework-common.version>1.0.0</bn-framework-common.version>
     </properties>
 </project>

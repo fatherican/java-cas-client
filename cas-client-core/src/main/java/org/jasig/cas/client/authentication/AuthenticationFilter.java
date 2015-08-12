@@ -18,11 +18,16 @@
  */
 package org.jasig.cas.client.authentication;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bn.framework.utils.MD5;
+import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.configuration.ConfigurationKeys;
+import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
 import org.jasig.cas.client.util.AbstractCasFilter;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.util.ReflectUtils;
+import org.jasig.cas.client.validation.UserInfo;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -50,6 +55,15 @@ import java.util.Map;
  * @since 3.0
  */
 public class AuthenticationFilter extends AbstractCasFilter {
+    /**
+     * 用户是否已经登录的标识的生成.
+     */
+    private CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator;
+    /**
+     * 用户详细信息cookie生成器.
+     */
+    private CookieRetrievingCookieGenerator  userInfoCookieGenerator;
+
     /**
      * The URL to the CAS Server login.
      */
@@ -145,15 +159,11 @@ public class AuthenticationFilter extends AbstractCasFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        
-        final HttpSession session = request.getSession(false);
-        final Boolean isLogined = (session != null && session.getAttribute(CONST_CAS_ISLOGINED) != null) ? (Boolean) session.getAttribute(CONST_CAS_ISLOGINED) : false;
-
+        final Boolean isLogined =isLogined(request, response);
         if (isLogined) {
             filterChain.doFilter(request, response);
             return;
         }
-
         final String serviceUrl = constructServiceUrl(request, response);
         final String ticket = retrieveTicketFromRequest(request);
         final boolean wasGatewayed = this.gateway && this.gatewayStorage.hasGatewayedAlready(request, serviceUrl);
@@ -209,5 +219,42 @@ public class AuthenticationFilter extends AbstractCasFilter {
         }
         final String requestUri = urlBuffer.toString();
         return this.ignoreUrlPatternMatcherStrategyClass.matches(requestUri);
+    }
+
+    /**
+     * 判断用户是否已登录.
+     * 1、首先判断cookie中是否
+     * @return
+     */
+    private boolean isLogined(final HttpServletRequest request, final HttpServletResponse response){
+        //用户信息
+        String userInfoJsonStr = userInfoCookieGenerator.retrieveCookieValue(request);
+        //用户登录标识的String字符串
+        String cookieLoginFlag = userLoginedFlagCookieGenerator.retrieveCookieValue(request);
+        if (StringUtils.isBlank(userInfoJsonStr) || StringUtils.isBlank(cookieLoginFlag)){
+            return false;
+        }
+        UserInfo ui = JSONObject.parseObject(userInfoJsonStr, UserInfo.class);
+        String orginLoginFlag = MD5.encode(ui.getUserId() + ui.getValidateDate().getTime());
+        if (StringUtils.equals(orginLoginFlag, cookieLoginFlag)){
+            return true;
+        }
+        return false;
+    }
+
+    public CookieRetrievingCookieGenerator getUserLoginedFlagCookieGenerator() {
+        return userLoginedFlagCookieGenerator;
+    }
+
+    public void setUserLoginedFlagCookieGenerator(CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator) {
+        this.userLoginedFlagCookieGenerator = userLoginedFlagCookieGenerator;
+    }
+
+    public CookieRetrievingCookieGenerator getUserInfoCookieGenerator() {
+        return userInfoCookieGenerator;
+    }
+
+    public void setUserInfoCookieGenerator(CookieRetrievingCookieGenerator userInfoCookieGenerator) {
+        this.userInfoCookieGenerator = userInfoCookieGenerator;
     }
 }
