@@ -123,8 +123,8 @@ password:<input id="password" type="text"/>
 			<li class="active"><a href="./index.jsp">You are on the /index.jsp page</a></li>
 			<li><a href="<%=request.getContextPath()%>/protected/index.jsp">Call the /protected/index.jsp page</a></li>
 			<!-- #### change with your own CAS server and your host name #### -->
-			<li><a href="https://cas.com:8443/cas/logout?service=http://client1.com:8081/client">Call the CAS logout</a></li>
-			<li><a href="<%=request.getContextPath()%>/protected/login.sso?redirectToUrl=http://www.baidu.com">protected Login</a></li>
+			<li><a href="https://cas.com:8443/cas/logout?service=http://client1.com:8081/client1">Call the CAS logout</a></li>
+			<li><a href="<%=request.getContextPath()%>/protected/login.sso?redirectToUrl=http://www.baidu.com">登录跳转</a></li>
 		</ul>
 		<h3>
 			<%

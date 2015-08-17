@@ -18,11 +18,12 @@
  */
 package org.jasig.cas.client.session;
 
+import com.sun.istack.internal.NotNull;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.Protocol;
 import org.jasig.cas.client.configuration.ConfigurationKeys;
-import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
+import org.jasig.cas.client.cookie.UserCookieHandler;
 import org.jasig.cas.client.util.CommonUtils;
 import org.jasig.cas.client.util.XmlUtils;
 import org.slf4j.Logger;
@@ -45,14 +46,9 @@ import java.util.zip.Inflater;
  *
  */
 public final class SingleSignOutHandler {
-    /**
-     * 用户是否已经登录的标识的生成.
-     */
-    private CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator;
-    /**
-     * 用户详细信息cookie生成器.
-     */
-    private CookieRetrievingCookieGenerator  userInfoCookieGenerator;
+    /**用户cookie的处理*/
+    @NotNull
+    private UserCookieHandler userCookieHandler;
 
     private final static int DECOMPRESSION_FACTOR = 10;
 
@@ -331,8 +327,7 @@ public final class SingleSignOutHandler {
      * @param request HTTP request containing a CAS logout message.
      */
     private void destoryUserCookie(final HttpServletRequest request, final HttpServletResponse response) {
-        userInfoCookieGenerator.removeCookie(response);
-        userLoginedFlagCookieGenerator.removeCookie(response);
+        userCookieHandler.destoryUserCookie(request, response);
     }
 
     /**
@@ -401,19 +396,11 @@ public final class SingleSignOutHandler {
         }
     }
 
-    public CookieRetrievingCookieGenerator getUserLoginedFlagCookieGenerator() {
-        return userLoginedFlagCookieGenerator;
+    public UserCookieHandler getUserCookieHandler() {
+        return userCookieHandler;
     }
 
-    public void setUserLoginedFlagCookieGenerator(CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator) {
-        this.userLoginedFlagCookieGenerator = userLoginedFlagCookieGenerator;
-    }
-
-    public CookieRetrievingCookieGenerator getUserInfoCookieGenerator() {
-        return userInfoCookieGenerator;
-    }
-
-    public void setUserInfoCookieGenerator(CookieRetrievingCookieGenerator userInfoCookieGenerator) {
-        this.userInfoCookieGenerator = userInfoCookieGenerator;
+    public void setUserCookieHandler(UserCookieHandler userCookieHandler) {
+        this.userCookieHandler = userCookieHandler;
     }
 }

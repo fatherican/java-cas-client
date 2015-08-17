@@ -19,12 +19,10 @@
 package org.jasig.cas.client.validation;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bn.framework.utils.MD5;
 import org.apache.commons.lang3.StringUtils;
 import org.jasig.cas.client.Protocol;
-import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
+import org.jasig.cas.client.cookie.UserCookieHandler;
 import org.jasig.cas.client.util.AbstractCasFilter;
-import org.springframework.web.util.CookieGenerator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -52,15 +50,9 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
     private UserPair[] userPairAttributes = {new UserPair("userName","username"),new UserPair("userId","userId")};
     private Map<String,String> casServerUserFieldPairToClientUserField;
     private Class<? extends UserInfo> userClass;
-    /**
-     * 用户cookie的生成
-     */
-    private CookieRetrievingCookieGenerator userInfoCookieGenerator;
 
-    /**
-     * 用户是否已经登录的标识的生成.
-     */
-    private CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator;
+    /**用户cookie的处理*/
+    private UserCookieHandler userCookieHandler;
 
     public Cas30ProxyReceivingTicketValidationFilter() {
         super(Protocol.CAS3);
@@ -91,10 +83,7 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
         //设置用户 授权 登录时间，并且保存到requet域中，当UserInfoHoldFilter接收到该值后就会重新初始化
         ui.setValidateDate(new Date());
         request.setAttribute(AbstractCasFilter.CONST_CAS_USERINFO, ui);
-        //用户信息加密后保存到cookie
-        userInfoCookieGenerator.addCookie(request, response, JSONObject.toJSONString(ui));
-        //用户登录标识加密后保存到cookie （通过JWT 加密，加密的值= 用户ID + 用户验证时间)
-        userLoginedFlagCookieGenerator.addCookie(request,response, MD5.encode(ui.getUserId()+ui.getValidateDate().getTime()));
+        userCookieHandler.addUserLoginCookie(request, response, ui);
         //登录成功后跳转的地址
         String url = request.getParameter("redirectToUrl");
         if(StringUtils.isNotBlank(url)){
@@ -104,13 +93,6 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
         }
     }
 
-    public CookieGenerator getUserInfoCookieGenerator() {
-        return userInfoCookieGenerator;
-    }
-
-    public void setUserInfoCookieGenerator(CookieRetrievingCookieGenerator userInfoCookieGenerator) {
-        this.userInfoCookieGenerator = userInfoCookieGenerator;
-    }
 
     @Override
     protected boolean needRedirect(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -149,11 +131,11 @@ public class Cas30ProxyReceivingTicketValidationFilter extends Cas20ProxyReceivi
         this.casServerUserFieldPairToClientUserField = casServerUserFieldPairToClientUserField;
     }
 
-    public CookieRetrievingCookieGenerator getUserLoginedFlagCookieGenerator() {
-        return userLoginedFlagCookieGenerator;
+    public UserCookieHandler getUserCookieHandler() {
+        return userCookieHandler;
     }
 
-    public void setUserLoginedFlagCookieGenerator(CookieRetrievingCookieGenerator userLoginedFlagCookieGenerator) {
-        this.userLoginedFlagCookieGenerator = userLoginedFlagCookieGenerator;
+    public void setUserCookieHandler(UserCookieHandler userCookieHandler) {
+        this.userCookieHandler = userCookieHandler;
     }
 }

@@ -29,6 +29,10 @@
        </bean>
 
 
+    <!--用户登录登出Cookie操作-->
+    <bean id="userLoginHandler" class="org.jasig.cas.client.cookie.UserCookieHandler"
+          p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
+          p:userInfoCookieGenerator-ref="userInfoCookieGenerator"/>
 
 
     <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie-->
@@ -36,26 +40,22 @@
          p:HANDLER-ref="logoutHandler"/>
     <!--处理登出的实现-->
     <bean id="logoutHandler" class="org.jasig.cas.client.session.SingleSignOutHandler"
-          p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
-          p:userInfoCookieGenerator-ref="userInfoCookieGenerator"/>
+          p:userCookieHandler-ref="userLoginHandler"/>
 
-    <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie-->
+    <!--拦截请求，判断当前用户是否已登录，如果未登录则跳转到CAS server登录-->
     <bean id="CASAuthenticationFilter" class="org.jasig.cas.client.authentication.AuthenticationFilter"
-          p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
-          p:userInfoCookieGenerator-ref="userInfoCookieGenerator"
-            />
+          p:userCookieHandler-ref="userLoginHandler"/>
 
     <!--验证Ticket的有效性和初始化Session,把用户信息json序列化后，加密保存到cookie,不使用Session-->
     <bean id="CasValidationFilter" class="org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter"
-            p:userInfoCookieGenerator-ref="userInfoCookieGenerator"
-            p:userLoginedFlagCookieGenerator-ref="userLoginedFlagCookieGenerator"
+            p:userCookieHandler-ref="userLoginHandler"
             p:casServerUserFieldPairToClientUserField-ref="casServerUserFieldPairToClientUserField"
             p:useSession="false"
             p:userClass-ref="usrInfoClass"/>
 
     <!--从cookie中获取用户信息-->
     <bean id="UserInfoThreadLocalFilter" class="org.jasig.cas.client.util.UserInfoThreadLocalFilter"
-          p:cookieGenerator-ref="userInfoCookieGenerator"
+          p:userCookieHandler-ref="userLoginHandler"
           p:userInfoClass-ref="usrInfoClass"/>
 
     <!--client 和 之间casServer 用户对象中字段的对应关系 key是本地usr bean对象属性的名称，value是casServer端usr bean对象属性的名称-->
@@ -69,12 +69,15 @@
         <constructor-arg value="com.bn.MyUserInfo"/>
     </bean>
 
+
+
     <!--默认用户的信息存储在客户端一天-->
     <bean id="userInfoCookieGenerator" class="org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator"
           c:casCookieValueManager-ref="userInfoCookieValueManager"
           p:cookieSecure="false"
           p:cookieMaxAge="86400"
           p:cookieName="UC"
+          p:cookieHttpOnly="true"
           p:cookiePath="/client1"/>
 
     <bean id="userInfoCookieValueManager" class="org.jasig.cas.client.cookie.DefaultCasCookieValueManager"
@@ -89,6 +92,7 @@
           p:cookieSecure="false"
           p:cookieMaxAge="-1"
           p:cookieName="ULF"
+          p:cookieHttpOnly="true"
           p:cookiePath="/client1"/>
 
     <bean id="userLoginFlagCookieValueManager" class="org.jasig.cas.client.cookie.DefaultCasCookieValueManager"

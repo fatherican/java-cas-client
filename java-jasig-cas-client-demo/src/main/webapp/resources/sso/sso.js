@@ -4,6 +4,30 @@ var SSO = {
         var $form$form;//动态创建的form表单
         var validateLoginServiceUrl;//该地址用来验证登录的结果和初始化客户端Session
         var casServerLoginUrl;//该地址用来向cas服务器请求LoginTicket和提交form表单
+        /**
+         * 判断用户是否已经在本地登录.
+         */
+        function localLogined(){
+            $.ajax({
+                url:"./isLogin.sso",
+                type:'get',
+                async:false,
+                success:function(data){
+                    if(data == "true"){
+                        sso.successCallback();
+                    }else{
+                        //本地未登录，获取登录票据
+                        getLT();
+                    }
+                },
+                error: function(xhr, status, error){
+                    getLT();
+                }
+            });
+        }
+
+
+
 
         /**
          * 初始化cas调用的整个过程中需要用到的URL
@@ -62,7 +86,21 @@ var SSO = {
          */
         function getLT(){
             var flowExecutionkey = $form.find("#flowExecutionkey").val();
-            $.getJSON(casServerLoginUrl+"?getLt=true&service="+validateLoginServiceUrl+"&isAjax=true&flowExecutionkey="+ flowExecutionkey +"&callback=?",function(response){
+            var renew = $("#renew").val();
+            var gateway = $("#gateway").val();
+            var getLtUrl = casServerLoginUrl+"?getLt=true&service="+validateLoginServiceUrl+"&isAjax=true&flowExecutionkey="+ flowExecutionkey +"&callback=?";
+            if (renew == 'true' && gateway == 'true'){
+                alert ("renew 和 gateway 不允许同时为true");
+                return;
+            }
+            if (renew == 'true') {
+                getLtUrl = getLtUrl + "&renew=true";
+            }
+            if (gateway == 'true') {
+                getLtUrl = getLtUrl + "&gateway=true";
+            }
+
+            $.getJSON(getLtUrl,function(response){
                 if(response != null){
                     //用户去获取LoginTicket的时候发现，用户已经通过SSO登陆过、
                     // 所以不需要再登录，带着ST去初始化客户端session
@@ -199,8 +237,9 @@ var SSO = {
             initUrl();
             //初始化form表单
             initSubmitFormStruct();
-            //获取登录票据
-            getLT();
+            //判断本地是否在登录中
+            localLogined();
+
         };
         sso.init();
 

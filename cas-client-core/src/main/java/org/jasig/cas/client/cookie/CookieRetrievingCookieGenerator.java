@@ -77,6 +77,9 @@ public class CookieRetrievingCookieGenerator extends CookieGenerator {
         if (isCookieSecure()) {
             cookie.setSecure(true);
         }
+        if (isCookieHttpOnly()) {
+            cookie.setHttpOnly(true);
+        }
         response.addCookie(cookie);
     }
 

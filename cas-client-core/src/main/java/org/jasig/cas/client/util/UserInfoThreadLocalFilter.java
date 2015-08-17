@@ -19,7 +19,7 @@
 package org.jasig.cas.client.util;
 
 import com.alibaba.fastjson.JSONObject;
-import org.jasig.cas.client.cookie.CookieRetrievingCookieGenerator;
+import org.jasig.cas.client.cookie.UserCookieHandler;
 import org.jasig.cas.client.validation.UserInfo;
 
 import javax.servlet.*;
@@ -39,7 +39,8 @@ public final class UserInfoThreadLocalFilter implements Filter {
 
     private Class<? extends UserInfo> userInfoClass;
 
-    private CookieRetrievingCookieGenerator cookieGenerator;
+    /**用户cookie的处理*/
+    private UserCookieHandler userCookieHandler;
 
 
     public void init(final FilterConfig filterConfig) throws ServletException {
@@ -56,7 +57,7 @@ public final class UserInfoThreadLocalFilter implements Filter {
 //            if(session == null){//用户尚未登录，所以不解析从客户端发来的cookie用户数据，而且将用户的cookie数据置为空
 //                cookieGenerator.removeCookie(response);
 //            }else{
-                final String userInfoJsonStr = cookieGenerator.retrieveCookieValue(request);
+                final String userInfoJsonStr = userCookieHandler.retrieveUserCookieValue(request);
                 //登录成功后，从request中获取用户信息，忽略客户端的cookie
                 if ( request.getAttribute(AbstractCasFilter.CONST_CAS_USERINFO) != null){
                     UserInfoHolder.setUserInfo((UserInfo) request.getAttribute(AbstractCasFilter.CONST_CAS_USERINFO));
@@ -77,19 +78,19 @@ public final class UserInfoThreadLocalFilter implements Filter {
     }
 
 
-    public CookieRetrievingCookieGenerator getCookieGenerator() {
-        return cookieGenerator;
-    }
-
-    public void setCookieGenerator(CookieRetrievingCookieGenerator cookieGenerator) {
-        this.cookieGenerator = cookieGenerator;
-    }
-
     public Class<? extends UserInfo> getUserInfoClass() {
         return userInfoClass;
     }
 
     public void setUserInfoClass(Class<? extends UserInfo> userInfoClass) {
         this.userInfoClass = userInfoClass;
+    }
+
+    public UserCookieHandler getUserCookieHandler() {
+        return userCookieHandler;
+    }
+
+    public void setUserCookieHandler(UserCookieHandler userCookieHandler) {
+        this.userCookieHandler = userCookieHandler;
     }
 }
